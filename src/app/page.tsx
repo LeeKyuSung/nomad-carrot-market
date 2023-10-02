@@ -122,6 +122,39 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <div className="bg-white p-10 rounded-2xl shadow-xl group">
+        <details className="select-none open:text-white open:bg-indigo-300">
+          <summary className="cursor-pointer">
+            What is my favorite food.
+          </summary>
+          <span>김치</span>
+        </details>
+      </div>
+      <div className="bg-white p-10 rounded-2xl shadow-xl group">
+        <ul className="list-decimal marker:text-teal-500">
+          <li>hi</li>
+          <li>hi</li>
+          <li>hi</li>
+          <li>hi</li>
+        </ul>
+      </div>
+      <div className="bg-white p-10 rounded-2xl shadow-xl group">
+        <input
+          type="file"
+          className="file:cursor-pointer
+          file:hover:text-purple-500 file:hover:bg-white file:hover:border-purple-500 file:hover:border
+          file:transition-colors
+          file:border file:rounded-xl file:px-5 file:text-white file:bg-purple-500 "
+        />
+      </div>
+      <div className="bg-white p-10 rounded-2xl shadow-xl group">
+        <p
+          className="first-letter:text-7xl first-letter:uppercase
+          first-letter:hover:text-purple-400"
+        >
+          asdfzxcvo 123ohhnf;oaisdnf 13
+        </p>
+      </div>
     </div>
   );
 }

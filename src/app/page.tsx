@@ -40,7 +40,7 @@ export default function Home() {
           Checkout
         </button>
       </div>
-      <div className="bg-white overflow-hidden rounded-2xl shadow-xl">
+      <div className="bg-white overflow-hidden rounded-2xl shadow-xl group">
         <div className="bg-blue-500 p-6 pb-14">
           <span className="text-white text-2xl ">Profile</span>
         </div>
@@ -50,7 +50,7 @@ export default function Home() {
               <span className="text-sm text-gray-500">Orders</span>
               <span className="font-medium">340</span>
             </div>
-            <div className="h-24 w-24 bg-red-400 rounded-full" />
+            <div className="h-24 w-24 bg-red-400 rounded-full group-hover:bg-zinc-500 transition-colors" />
             <div className="flex flex-col items-center">
               <span className="text-sm text-gray-500">Spent</span>
               <span className="font-medium">$2,310</span>
@@ -62,7 +62,31 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="bg-white p-10 rounded-2xl shadow-xl">
+      <form className="flex flex-col space-y-2 bg-blue-400 rounded-2xl shadow-xl p-5 focus-within:bg-blue-100">
+        <input
+          type="text"
+          required
+          placeholder="Username"
+          className="required:border-2 border-yellow-500
+          invalid:bg-red-500
+          peer"
+        ></input>
+        <input
+          type="password"
+          required
+          placeholder="Password"
+          disabled
+          className="
+          placeholder-shown:bg-green-500
+          disabled:bg-red-300"
+        ></input>
+        <span className="peer-invalid:text-red-500 peer-valid:hidden">
+          This input is invalid
+        </span>
+        <span className="hidden peer-valid:block">This input is valid</span>
+        <input type="submit" value="Login" className="bg-white"></input>
+      </form>
+      <div className="bg-white p-10 rounded-2xl shadow-xl group">
         <div className="flex mb-5 justify-between items-center">
           <span>⬅️</span>
           <div className=" space-x-3">
@@ -70,7 +94,7 @@ export default function Home() {
             <span className="shadow-xl p-2 rounded-md">💖</span>
           </div>
         </div>
-        <div className="bg-zinc-400 h-72 mb-5" />
+        <div className="bg-zinc-400 h-72 mb-5 group-hover:bg-red-400" />
         <div className="flex flex-col">
           <span className="font-medium text-xl">Swoon Lounge</span>
           <span className="text-xs text-gray-500">Chair</span>

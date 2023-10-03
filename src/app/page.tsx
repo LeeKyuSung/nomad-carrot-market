@@ -1,8 +1,95 @@
+"use client";
+
 import Image from "next/image";
+import { SetStateAction, useEffect, useState } from "react";
 
 export default function Home() {
+  const [darkTheme, setDarkTheme] = useState("");
+
+  // localStorage에 저장된 값이 있으면 가져옴
+  useEffect(() => {
+    const localTheme = localStorage.getItem("darkTheme");
+    if (localTheme) setDarkTheme(localTheme);
+    else setDarkTheme("system");
+  }, []);
+
+  const handleRadioChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    if (darkTheme !== e.target.value) setDarkTheme(e.target.value);
+  };
+
+  useEffect(() => {
+    // localStorage에 저장
+    localStorage.setItem("darkTheme", darkTheme);
+
+    if (darkTheme === "system") {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+      const handleChange = () => {
+        console.log(darkTheme);
+        if (darkTheme === "system") {
+          if (mediaQuery.matches) {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+        }
+      };
+      handleChange();
+
+      // 시스템 설정이 바뀔 때 테마 적용하도록 mediaQuery에 이벤트 리스너 추가
+      mediaQuery.addEventListener("change", handleChange);
+      // Clean up
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    } else {
+      if (darkTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else if (darkTheme === "light") {
+        document.documentElement.classList.remove("dark");
+      }
+    }
+  }, [darkTheme]);
+
   return (
     <div className="bg-slate-400 dark:bg-black xl:place-content-center py-20 px-20 grid gap-10 lg:grid-cols-2 xl:grid-cols-3 min-h-screen">
+      <div className="bg-white p-6 rounded-3xl shadow-xl">
+        <form className="flex flex-col">
+          <div className="flex flex-row justify-between">
+            <input
+              type="radio"
+              id="system"
+              name="darkTheme"
+              value="system"
+              checked={darkTheme === "system"}
+              onChange={handleRadioChange}
+            />
+            <label htmlFor="system">시스템 설정 사용</label>
+          </div>
+          <div className="flex flex-row justify-between">
+            <input
+              type="radio"
+              id="dark"
+              name="darkTheme"
+              value="dark"
+              checked={darkTheme === "dark"}
+              onChange={handleRadioChange}
+            />
+            <label htmlFor="dark">어두운 테마</label>
+          </div>
+          <div className="flex flex-row justify-between">
+            <input
+              type="radio"
+              id="light"
+              name="darkTheme"
+              value="light"
+              checked={darkTheme === "light"}
+              onChange={handleRadioChange}
+            />
+            <label htmlFor="light">밝은 테마</label>
+          </div>
+        </form>
+      </div>
       <div className="bg-white sm:bg-red-400 md:bg-teal-400 lg:bg-indigo-400 xl:bg-yellow-400 2xl:bg-pink-500 p-6 rounded-3xl shadow-xl">
         <span className="font-semibold text-3xl">Select Item</span>
 

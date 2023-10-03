@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="bg-slate-400 py-20 px-20 grid gap-10 min-h-screen">
+    <div className="bg-slate-400 xl:place-content-center py-20 px-20 grid gap-10 lg:grid-cols-2 xl:grid-cols-3 min-h-screen">
       <div className="bg-white sm:bg-red-400 md:bg-teal-400 lg:bg-indigo-400 xl:bg-yellow-400 2xl:bg-pink-500 p-6 rounded-3xl shadow-xl">
         <span className="font-semibold text-3xl">Select Item</span>
 
@@ -41,7 +41,7 @@ export default function Home() {
         </button>
       </div>
       <div className="bg-white overflow-hidden rounded-2xl shadow-xl group">
-        <div className="bg-blue-500 p-6 pb-14">
+        <div className="bg-blue-500 landscape:bg-teal-400  p-6 pb-14">
           <span className="text-white text-2xl ">Profile</span>
         </div>
         <div className="rounded-3xl p-6 bg-white relative -top-9">
@@ -138,7 +138,7 @@ export default function Home() {
           <li>hi</li>
         </ul>
       </div>
-      <div className="bg-white p-10 rounded-2xl shadow-xl group">
+      <div className="bg-white p-10 rounded-2xl shadow-xl group xl:col-span-2">
         <input
           type="file"
           className="file:cursor-pointer

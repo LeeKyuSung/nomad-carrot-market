@@ -53,7 +53,7 @@ export default function Home() {
 
   return (
     <div className="bg-slate-400 dark:bg-black xl:place-content-center py-20 px-20 grid gap-10 lg:grid-cols-2 xl:grid-cols-3 min-h-screen">
-      <div className="bg-white p-6 rounded-3xl shadow-xl">
+      <div className="bg-[url('https://news.samsungdisplay.com/wp-content/uploads/2018/08/8.jpg')] p-6 rounded-3xl shadow-xl">
         <form className="flex flex-col">
           <div className="flex flex-row justify-between">
             <input

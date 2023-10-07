@@ -1,3 +1,4 @@
+import Layout from "@/components/layout";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -16,7 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div className="w-full max-w-xl mx-auto">
+          <Layout title="홈">{children}</Layout>
+        </div>
+      </body>
     </html>
   );
 }

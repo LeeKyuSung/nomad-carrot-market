@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <div className="flex flex-col space-y-5 py-10">
+    <div className="flex flex-col space-y-5">
       {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
         <div
           key={i}

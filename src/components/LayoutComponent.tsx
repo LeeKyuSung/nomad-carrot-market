@@ -2,12 +2,14 @@
 
 import { classNames } from "@/libs/utils";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+
+type Tab = "home" | "community" | "chat" | "streams" | "profile" | "none";
 
 interface LayoutProps {
   title?: string;
   canGoBack?: boolean;
-  hasTabBar?: boolean;
+  hasTabBar?: Tab;
   children: React.ReactNode;
 }
 
@@ -21,6 +23,13 @@ export default function LayoutComponent({
   const onClick = () => {
     router.back();
   };
+
+  // const pathName = usePathname();
+  // console.log("pathName : " + pathName);
+  // pathName으로 title, canGoBack, hasTabBar 등을 결정할 수 있음
+  // 그러면 각 페이지에 대한 설정을 현재 파일에서 세팅할 수 있긴 한데,
+  // 관리 측면에서는 좋지 않을 것 같음
+
   return (
     <div>
       <div
@@ -55,7 +64,14 @@ export default function LayoutComponent({
       {hasTabBar ? (
         <nav className="bg-white w-full max-w-xl text-gray-800 border-t fixed bottom-0 px-10 pb-5 pt-3 flex justify-between items-center text-xs">
           <Link href="/">
-            <div className="flex flex-col items-center space-y-2">
+            <div
+              className={classNames(
+                "flex flex-col items-center space-y-2",
+                hasTabBar === "home"
+                  ? "text-orange-400 cursor-default"
+                  : "hover:text-orange-500"
+              )}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -74,7 +90,14 @@ export default function LayoutComponent({
             </div>
           </Link>
           <Link href="/community">
-            <div className="flex flex-col items-center space-y-2">
+            <div
+              className={classNames(
+                "flex flex-col items-center space-y-2 hover:text-orange-500",
+                hasTabBar === "community"
+                  ? "text-orange-400 cursor-default"
+                  : "hover:text-orange-500"
+              )}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -93,7 +116,14 @@ export default function LayoutComponent({
             </div>
           </Link>
           <Link href="/chat">
-            <div className="flex flex-col items-center space-y-2">
+            <div
+              className={classNames(
+                "flex flex-col items-center space-y-2 hover:text-orange-500",
+                hasTabBar === "chat"
+                  ? "text-orange-400 cursor-default"
+                  : "hover:text-orange-500"
+              )}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -112,7 +142,14 @@ export default function LayoutComponent({
             </div>
           </Link>
           <Link href="/streams">
-            <div className="flex flex-col items-center space-y-2">
+            <div
+              className={classNames(
+                "flex flex-col items-center space-y-2 hover:text-orange-500",
+                hasTabBar === "streams"
+                  ? "text-orange-400 cursor-default"
+                  : "hover:text-orange-500"
+              )}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -130,7 +167,14 @@ export default function LayoutComponent({
             </div>
           </Link>
           <Link href="/profile">
-            <div className="flex flex-col items-center space-y-2">
+            <div
+              className={classNames(
+                "flex flex-col items-center space-y-2 hover:text-orange-500",
+                hasTabBar === "profile"
+                  ? "text-orange-400 cursor-default"
+                  : "hover:text-orange-500"
+              )}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

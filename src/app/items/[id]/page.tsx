@@ -1,6 +1,6 @@
 export default function ItemDetail() {
   return (
-    <div className="px-4 py-10">
+    <div className="px-4">
       <div className="mb-8">
         <div className="h-96 bg-slate-300" />
         <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">

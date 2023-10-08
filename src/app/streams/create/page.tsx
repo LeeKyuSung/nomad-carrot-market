@@ -1,6 +1,6 @@
 export default function Create() {
   return (
-    <div className="space-y-5 py-10 px-4">
+    <div className="space-y-5 px-4">
       <div>
         <label
           className="mb-1 block text-sm font-medium text-gray-700"

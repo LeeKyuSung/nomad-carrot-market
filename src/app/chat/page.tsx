@@ -1,6 +1,6 @@
 export default function Chats() {
   return (
-    <div className="py-10 divide-y-[1px] ">
+    <div className="divide-y-[1px] ">
       {[1, 1, 1, 1, 1, 1, 1].map((_, i) => (
         <div
           key={i}

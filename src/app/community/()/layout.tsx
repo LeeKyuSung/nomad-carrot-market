@@ -1,4 +1,4 @@
-import LayoutComponent from "@/components/LayoutComponent";
+import LayoutComponent from "@/components/layout-component";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

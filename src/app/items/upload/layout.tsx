@@ -1,5 +1,9 @@
-import LayoutComponent from "@/components/LayoutComponent";
+import LayoutComponent from "@/components/layout-component";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <LayoutComponent canGoBack={true}>{children}</LayoutComponent>;
+  return (
+    <LayoutComponent canGoBack title="Upload Product">
+      {children}
+    </LayoutComponent>
+  );
 }

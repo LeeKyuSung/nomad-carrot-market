@@ -1,13 +1,16 @@
+import FloatingButton from "@/components/floating-button";
+import Link from "next/link";
+
 export default function Streams() {
   return (
-    <div className="divide-y-2 space-y-4">
+    <div className="divide-y-[1px] space-y-4">
       {[1, 2, 3, 4, 5].map((_, i) => (
-        <div className="pt-4 px-4" key={i}>
+        <Link key={i} href={`/streams/${i}`} className="pt-4 block  px-4">
           <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
           <h3 className="text-gray-700 text-lg mt-2">Lets try potatoes</h3>
-        </div>
+        </Link>
       ))}
-      <button className="fixed hover:bg-orange-500 curosr-pointer transition-colors bottom-24 right-5 shadow-xl bg-orange-400 rounded-full p-4 border-trasparent text-white">
+      <FloatingButton href="/streams/create">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -21,7 +24,7 @@ export default function Streams() {
             d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"
           />
         </svg>
-      </button>
+      </FloatingButton>
     </div>
   );
 }

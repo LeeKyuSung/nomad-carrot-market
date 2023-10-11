@@ -32,14 +32,9 @@ export default function LayoutComponent({
 
   return (
     <div>
-      <div
-        className={classNames(
-          !canGoBack ? "justify-center" : "space-x-4",
-          "bg-white w-full max-w-xl text-lg font-medium px-5 py-3 fixed text-gray-800 border-b top-0 flex items-center"
-        )}
-      >
+      <div className="bg-white w-full h-12 max-w-xl justify-center text-lg px-10 font-medium  fixed text-gray-800 border-b top-0  flex items-center">
         {canGoBack ? (
-          <button onClick={onClick}>
+          <button onClick={onClick} className="absolute left-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -56,9 +51,14 @@ export default function LayoutComponent({
             </svg>
           </button>
         ) : null}
-        {title ? <span>{title}</span> : null}
+        {title ? (
+          <span className={classNames(canGoBack ? "mx-auto" : "", "")}>
+            {title}
+          </span>
+        ) : null}
       </div>
       <div className={classNames("pt-16", hasTabBar ? "pb-24" : "")}>
+        {/* TODO layout에서 패딩 줄이고 각 페이지에서 상황에 따라서 상단 추가 패딩 추가하기 */}
         {children}
       </div>
       {hasTabBar ? (

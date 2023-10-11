@@ -1,8 +1,11 @@
+import Link from "next/link";
+
 export default function Chats() {
   return (
     <div className="divide-y-[1px] ">
       {[1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-        <div
+        <Link
+          href={`/chat/${i}`}
           key={i}
           className="flex px-4 cursor-pointer py-3 items-center space-x-3"
         >
@@ -13,7 +16,7 @@ export default function Chats() {
               See you tomorrow in the corner at 2pm!
             </p>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );

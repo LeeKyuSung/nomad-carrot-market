@@ -1,6 +1,6 @@
 import FloatingButton from "@/components/floating-button";
 import Item from "@/components/item";
-import Link from "next/link";
+import "@/libs/client";
 
 export default function Home() {
   return (

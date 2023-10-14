@@ -18,6 +18,9 @@ class Session {
       where: {
         id,
       },
+      include: {
+        user: true,
+      },
     });
     return result;
   }

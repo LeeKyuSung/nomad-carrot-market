@@ -1,6 +1,6 @@
 import FloatingButton from "@/components/floating-button";
 import Item from "@/components/item";
-import "@/libs/client";
+import "@/libs/server/client";
 import AppBar from "@/components/app-bar";
 
 export default function Home() {

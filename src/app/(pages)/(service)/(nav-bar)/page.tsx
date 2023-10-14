@@ -7,7 +7,8 @@ import AppBar from "@/components/app-bar";
 import useUser from "@/libs/client/useUser";
 
 export default function Home() {
-  const user = useUser();
+  const { user, isLoading } = useUser();
+  console.log(user, isLoading);
   return (
     <AppBar title="홈">
       <div className="flex flex-col space-y-5 divide-y">

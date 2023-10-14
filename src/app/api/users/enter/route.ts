@@ -1,25 +1,34 @@
 import client from "@/libs/server/client";
-import { NextResponse, NextRequest } from "next/server";
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   const { phone, email } = await request.json();
-  const payload = phone ? { phone: Number(phone) } : { email };
+  const user = phone ? { phone: Number(phone) } : email ? { email } : null;
+  if (!user)
+    return new Response(JSON.stringify({ ok: false }), { status: 400 });
+  const payload = String(Math.floor(100000 + Math.random() * 900000));
   const token = await client.token.create({
     data: {
-      payload: "1234",
+      payload,
       user: {
         connectOrCreate: {
           where: {
-            ...payload,
+            ...user,
           },
           create: {
             name: "Anonymous",
-            ...payload,
+            ...user,
           },
         },
       },
     },
   });
 
-  return NextResponse.json(token);
+  return new Response(
+    JSON.stringify({
+      ok: true,
+    }),
+    {
+      status: 200,
+    }
+  );
 }

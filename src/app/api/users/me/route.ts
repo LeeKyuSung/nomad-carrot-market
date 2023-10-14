@@ -1,9 +1,8 @@
-import session from "@/libs/server/session";
-import { cookies } from "next/headers";
+import getServerSession from "@/libs/server/getServerSession";
 
 export async function GET(request: Request) {
-  const cookieStore = cookies();
-  if (!cookieStore.has("session")) {
+  const session = await getServerSession();
+  if (!session) {
     return new Response(
       JSON.stringify({
         ok: false,
@@ -15,13 +14,10 @@ export async function GET(request: Request) {
     );
   }
 
-  const sessionId = Number(cookieStore.get("session")?.value);
-  const userSession = await session.read(Number(sessionId));
-
   return new Response(
     JSON.stringify({
       ok: true,
-      profile: userSession?.user,
+      profile: session.user,
     }),
     {
       status: 200,

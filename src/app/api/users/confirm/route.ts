@@ -3,20 +3,20 @@ import session from "@/libs/server/session";
 
 export async function POST(request: Request) {
   const { token } = await request.json();
-  const exists = await client.token.findUnique({
+  const foundToken = await client.token.findUnique({
     where: {
       payload: token,
     },
     include: { user: true },
   });
-  if (!exists) {
+  if (!foundToken) {
     return new Response(JSON.stringify({ ok: false }), { status: 400 });
   }
 
-  const sessionId = await session.create(exists.user.id);
+  const sessionId = await session.create(foundToken.user.id);
   await client.token.delete({
     where: {
-      id: exists.id,
+      id: foundToken.id,
     },
   });
 

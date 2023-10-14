@@ -3,7 +3,8 @@ import Button from "@/components/button";
 import Input from "@/components/input";
 import useMutation from "@/libs/client/useMutation";
 import { classNames } from "@/libs/client/utils";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface EnterForm {
@@ -42,6 +43,13 @@ export default function Enter() {
     if (tokenLoading) return;
     confirmToken(data);
   };
+  const router = useRouter();
+  useEffect(() => {
+    if (tokenData?.ok) {
+      alert("You are logged in!");
+      router.push("/");
+    }
+  }, [router, tokenData]);
 
   return (
     <div className="mt-16 px-4">

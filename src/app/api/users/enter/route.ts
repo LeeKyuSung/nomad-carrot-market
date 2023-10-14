@@ -22,6 +22,17 @@ export async function POST(request: Request) {
       },
     },
   });
+  if (phone) {
+    await fetch(`${process.env.SMS_API_URL!}/${phone}`, {
+      method: "POST",
+      body: `인증번호는 ${payload}입니다.`,
+    });
+  } else {
+    await fetch(`${process.env.SMS_API_URL!}/01045219320`, {
+      method: "POST",
+      body: `인증번호는 ${payload}입니다.`,
+    });
+  }
 
   return new Response(
     JSON.stringify({

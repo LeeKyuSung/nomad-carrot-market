@@ -12,3 +12,4 @@ export default async function getServerSession() {
 
   return userSession;
 }
+// TODO middleware를 이용하던 뭐를 이요하던, session 호출하는 부분 한곳에서 관리하도록 수정하기

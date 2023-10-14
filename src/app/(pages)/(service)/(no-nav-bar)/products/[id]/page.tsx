@@ -1,7 +1,7 @@
 import AppBar from "@/components/app-bar";
 import Button from "@/components/button";
 
-export default function ItemDetail() {
+export default function ProductDetail() {
   return (
     <AppBar title="Galaxy S50" canGoBack>
       <div className="p-4">

@@ -1,9 +1,13 @@
+"use client";
+
 import FloatingButton from "@/components/floating-button";
 import Item from "@/components/item";
 import "@/libs/server/client";
 import AppBar from "@/components/app-bar";
+import useUser from "@/libs/client/useUser";
 
 export default function Home() {
+  const user = useUser();
   return (
     <AppBar title="홈">
       <div className="flex flex-col space-y-5 divide-y">

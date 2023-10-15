@@ -33,6 +33,13 @@ export async function GET(
     },
   });
 
+  const isFavorited = await client.favorite.findFirst({
+    where: {
+      productId: Number(params.id),
+      userId: session.userId,
+    },
+  });
+
   const terms = product?.name.split(" ").map((word) => ({
     name: {
       contains: word,
@@ -60,6 +67,7 @@ export async function GET(
     JSON.stringify({
       ok: true,
       product,
+      isFav: Boolean(isFavorited),
       relatedProducts,
     }),
     {

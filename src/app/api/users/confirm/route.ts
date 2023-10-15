@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     }),
     {
       status: 200,
-      headers: { "Set-Cookie": `session=${sessionId}` },
+      headers: { "Set-Cookie": `session=${sessionId}; path=/;` },
     }
   );
 }

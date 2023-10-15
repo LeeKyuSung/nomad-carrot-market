@@ -33,10 +33,34 @@ export async function GET(
     },
   });
 
+  const terms = product?.name.split(" ").map((word) => ({
+    name: {
+      contains: word,
+    },
+  }));
+  const relatedProducts = await client.product.findMany({
+    where: {
+      OR: terms,
+      NOT: {
+        id: product?.id,
+      },
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          avatar: true,
+        },
+      },
+    },
+  });
+
   return new Response(
     JSON.stringify({
       ok: true,
       product,
+      relatedProducts,
     }),
     {
       status: 200,

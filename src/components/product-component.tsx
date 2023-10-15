@@ -8,7 +8,7 @@ interface ProductProps {
   hearts: number;
 }
 
-export default function Product({
+export default function ProductComponent({
   title,
   price,
   comments,

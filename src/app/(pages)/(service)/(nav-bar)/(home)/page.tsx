@@ -1,7 +1,7 @@
 "use client";
 
 import FloatingButton from "@/components/floating-button";
-import Product from "@/components/product";
+import ProductComponent from "@/components/product-component";
 import "@/libs/server/client";
 import AppBar from "@/components/app-bar";
 import useUser from "@/libs/client/useUser";
@@ -13,11 +13,11 @@ export default function Home() {
     <AppBar title="홈">
       <div className="flex flex-col space-y-5 divide-y">
         {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-          <Product
             id={i}
             key={i}
             title="iPhone 14"
             price={99}
+          <ProductComponent
             comments={1}
             hearts={1}
           />

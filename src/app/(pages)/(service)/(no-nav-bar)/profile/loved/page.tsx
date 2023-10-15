@@ -1,12 +1,12 @@
 import AppBar from "@/components/app-bar";
-import Product from "@/components/product";
+import ProductComponent from "@/components/product-component";
 
 export default function Loved() {
   return (
     <AppBar title="관심목록" canGoBack>
       <div className="flex flex-col space-y-5 pb-10 divide-y">
         {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-          <Product
+          <ProductComponent
             key={i}
             id={i}
             title="iPhone 14"

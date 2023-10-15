@@ -15,7 +15,13 @@ export async function GET(request: Request) {
     );
   }
 
-  const products = await client.product.findMany();
+  const products = await client.product.findMany({
+    include: {
+      _count: {
+        select: { Favorite: true },
+      },
+    },
+  });
 
   return new Response(
     JSON.stringify({

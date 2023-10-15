@@ -9,15 +9,16 @@ import { Product } from "@prisma/client";
 import Link from "next/link";
 import useSWR, { useSWRConfig } from "swr";
 
+interface ProductWithUser extends Product {
+  user: {
+    id: number;
+    name: string;
+    avatar: string;
+  };
+}
 interface ProductDetailResponse {
   ok: boolean;
-  product: Product & {
-    user: {
-      id: number;
-      name: string;
-      avatar: string;
-    };
-  };
+  product: ProductWithUser;
   isFav: boolean;
   relatedProducts: Product[];
 }

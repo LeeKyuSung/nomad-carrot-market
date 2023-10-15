@@ -8,10 +8,16 @@ import useUser from "@/libs/client/useUser";
 import useSWR from "swr";
 import { Product } from "@prisma/client";
 
+interface ProductWithCount extends Product {
+  _count: {
+    Favorite: number;
+  };
+}
 interface ProductResponse {
   ok: boolean;
-  products: Product[];
+  products: ProductWithCount[];
 }
+
 export default function Home() {
   const { user, isLoading } = useUser();
   const { data } = useSWR<ProductResponse>("/api/products");
@@ -26,7 +32,7 @@ export default function Home() {
             title={product.name}
             price={product.price}
             comments={1}
-            hearts={1}
+            hearts={product._count.Favorite}
           />
         ))}
       </div>

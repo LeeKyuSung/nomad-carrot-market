@@ -22,11 +22,15 @@ interface ProductDetailResponse {
 }
 
 export default function ProductDetail({ params }: { params: { id: string } }) {
-  const { data } = useSWR<ProductDetailResponse>(
+  const { data, mutate } = useSWR<ProductDetailResponse>(
     params.id ? `/api/products/${params.id}` : null
   );
-  const [toggleFav] = useMutation(`/api/products/${params.id}/fav`);
+  const [toggleFav, { loading }] = useMutation(
+    `/api/products/${params.id}/fav`
+  );
   const onFavClick = () => {
+    if (!data || loading) return;
+    mutate({ ...data, isFav: !data.isFav }, false);
     toggleFav({});
   };
 

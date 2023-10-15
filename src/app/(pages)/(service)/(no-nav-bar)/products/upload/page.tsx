@@ -5,6 +5,9 @@ import Button from "@/components/button";
 import Input from "@/components/input";
 import TextArea from "@/components/textarea";
 import useMutation from "@/libs/client/useMutation";
+import { Product } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 interface UploadProductForm {
@@ -12,13 +15,25 @@ interface UploadProductForm {
   price: number;
   description: string;
 }
+interface UploadProductMutation {
+  ok: boolean;
+  product: Product;
+}
 export default function Upload() {
+  const router = useRouter();
   const { register, handleSubmit } = useForm<UploadProductForm>();
-  const [uploadProduct, { loading, data }] = useMutation("/api/products");
+  const [uploadProduct, { loading, data }] =
+    useMutation<UploadProductMutation>("/api/products");
   const onValid = (data: UploadProductForm) => {
     if (loading) return;
     uploadProduct(data);
   };
+  useEffect(() => {
+    if (data?.ok) {
+      alert("Product uploaded");
+      router.push(`/products/${data.product.id}`);
+    }
+  });
 
   return (
     <AppBar canGoBack title="Upload Product">

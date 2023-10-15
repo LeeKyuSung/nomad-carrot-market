@@ -1,12 +1,12 @@
 import AppBar from "@/components/app-bar";
-import Item from "@/components/item";
+import Product from "@/components/product";
 
 export default function Sold() {
   return (
     <AppBar title="판매내역" canGoBack>
       <div className="flex flex-col space-y-5 pb-10 divide-y">
         {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-          <Item
+          <Product
             id={i}
             key={i}
             title="iPhone 14"

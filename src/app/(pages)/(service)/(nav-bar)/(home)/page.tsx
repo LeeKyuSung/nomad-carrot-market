@@ -1,7 +1,7 @@
 "use client";
 
 import FloatingButton from "@/components/floating-button";
-import Item from "@/components/item";
+import Product from "@/components/product";
 import "@/libs/server/client";
 import AppBar from "@/components/app-bar";
 import useUser from "@/libs/client/useUser";
@@ -13,7 +13,7 @@ export default function Home() {
     <AppBar title="홈">
       <div className="flex flex-col space-y-5 divide-y">
         {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
-          <Item
+          <Product
             id={i}
             key={i}
             title="iPhone 14"
@@ -23,7 +23,7 @@ export default function Home() {
           />
         ))}
       </div>
-      <FloatingButton href="/items/upload">
+      <FloatingButton href="/products/upload">
         <svg
           className="h-6 w-6"
           xmlns="http://www.w3.org/2000/svg"

@@ -3,10 +3,11 @@
 import AppBar from "@/components/app-bar";
 import Button from "@/components/button";
 import useMutation from "@/libs/client/useMutation";
+import useUser from "@/libs/client/useUser";
 import { classNames } from "@/libs/client/utils";
 import { Product } from "@prisma/client";
 import Link from "next/link";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 
 interface ProductDetailResponse {
   ok: boolean;
@@ -22,6 +23,8 @@ interface ProductDetailResponse {
 }
 
 export default function ProductDetail({ params }: { params: { id: string } }) {
+  const { user, isLoading } = useUser();
+  // const { mutate: unboundMutate } = useSWRConfig();
   const { data, mutate } = useSWR<ProductDetailResponse>(
     params.id ? `/api/products/${params.id}` : null
   );
@@ -32,6 +35,8 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
     if (!data || loading) return;
     mutate({ ...data, isFav: !data.isFav }, false);
     toggleFav({});
+    // unboundMutate("/api/users/me", (prev: any) => ({ ok: !prev.ok }), false);
+    // unboundMutate("/api/users/me"); // refetch
   };
 
   return (

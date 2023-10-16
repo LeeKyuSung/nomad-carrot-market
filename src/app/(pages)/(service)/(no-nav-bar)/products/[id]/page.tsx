@@ -3,7 +3,6 @@
 import AppBar from "@/components/app-bar";
 import Button from "@/components/button";
 import useMutation from "@/libs/client/useMutation";
-import useUser from "@/libs/client/useUser";
 import { classNames } from "@/libs/client/utils";
 import { Product } from "@prisma/client";
 import Link from "next/link";
@@ -24,7 +23,6 @@ interface ProductDetailResponse {
 }
 
 export default function ProductDetail({ params }: { params: { id: string } }) {
-  const { user, isLoading } = useUser();
   // const { mutate: unboundMutate } = useSWRConfig();
   const { data, mutate } = useSWR<ProductDetailResponse>(
     params.id ? `/api/products/${params.id}` : null

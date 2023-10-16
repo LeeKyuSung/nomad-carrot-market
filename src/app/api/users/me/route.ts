@@ -1,26 +1,15 @@
-import getServerSession from "@/libs/server/getServerSession";
+import withAuth from "@/libs/server/withAuth";
 
 export async function GET(request: Request) {
-  const session = await getServerSession();
-  if (!session) {
+  return withAuth(request, async (request) => {
     return new Response(
       JSON.stringify({
-        ok: false,
-        error: "Not logged in",
+        ok: true,
+        profile: request.session.user,
       }),
       {
-        status: 401,
+        status: 200,
       }
     );
-  }
-
-  return new Response(
-    JSON.stringify({
-      ok: true,
-      profile: session.user,
-    }),
-    {
-      status: 200,
-    }
-  );
+  });
 }

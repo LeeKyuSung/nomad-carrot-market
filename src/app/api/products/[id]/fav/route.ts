@@ -1,58 +1,47 @@
 import client from "@/libs/server/client";
-import getServerSession from "@/libs/server/getServerSession";
+import withAuth from "@/libs/server/withAuth";
 
 export async function POST(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const session = await getServerSession();
-  if (!session) {
+  return withAuth(request, async (request) => {
+    const alreadyFavorited = await client.favorite.findFirst({
+      where: {
+        productId: Number(params.id),
+        userId: request.session.userId,
+      },
+    });
+    if (alreadyFavorited) {
+      await client.favorite.delete({
+        where: {
+          id: alreadyFavorited.id,
+        },
+      });
+    } else {
+      await client.favorite.create({
+        data: {
+          user: {
+            connect: {
+              id: request.session.userId,
+            },
+          },
+          product: {
+            connect: {
+              id: Number(params.id),
+            },
+          },
+        },
+      });
+    }
+
     return new Response(
       JSON.stringify({
-        ok: false,
-        error: "Not logged in",
+        ok: true,
       }),
       {
-        status: 401,
+        status: 200,
       }
     );
-  }
-
-  const alreadyFavorited = await client.favorite.findFirst({
-    where: {
-      productId: Number(params.id),
-      userId: session.userId,
-    },
   });
-  if (alreadyFavorited) {
-    await client.favorite.delete({
-      where: {
-        id: alreadyFavorited.id,
-      },
-    });
-  } else {
-    await client.favorite.create({
-      data: {
-        user: {
-          connect: {
-            id: session.userId,
-          },
-        },
-        product: {
-          connect: {
-            id: Number(params.id),
-          },
-        },
-      },
-    });
-  }
-
-  return new Response(
-    JSON.stringify({
-      ok: true,
-    }),
-    {
-      status: 200,
-    }
-  );
 }

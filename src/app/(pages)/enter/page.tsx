@@ -48,6 +48,7 @@ export default function Enter() {
     if (tokenData?.ok) {
       alert("You are logged in!");
       router.push("/");
+      router.refresh(); // cookie가 업데이트 되지 않아서, 다시 enter로 redirect됨. 버그인가?
     }
   }, [router, tokenData]);
 

@@ -26,7 +26,9 @@ interface PostsResposne {
 export default function Community() {
   const { latitude, longitude } = useCoords();
   const { data } = useSWR<PostsResposne>(
-    `/api/posts?latitude=${latitude}&longitude=${longitude}`
+    latitude && longitude
+      ? `/api/posts?latitude=${latitude}&longitude=${longitude}`
+      : null
   );
   return (
     <AppBar title="동네생활">

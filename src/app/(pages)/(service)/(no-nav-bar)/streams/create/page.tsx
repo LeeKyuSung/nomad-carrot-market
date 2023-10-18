@@ -32,7 +32,7 @@ export default function Create() {
   };
   useEffect(() => {
     if (data && data.ok) {
-      router.push(`/streams/${data.stream.id}`);
+      router.replace(`/streams/${data.stream.id}`);
     }
   }, [data, router]);
   return (

@@ -1,15 +1,29 @@
+"use client";
+
 import AppBar from "@/components/app-bar";
 import FloatingButton from "@/components/floating-button";
+import { Stream } from "@prisma/client";
 import Link from "next/link";
+import useSWR from "swr";
+
+interface StreamsResponse {
+  ok: boolean;
+  streams?: Stream[];
+}
 
 export default function Streams() {
+  const { data } = useSWR<StreamsResponse>("/api/streams");
   return (
     <AppBar title="라이브">
       <div className="divide-y-[1px] space-y-4">
-        {[1, 2, 3, 4, 5].map((_, i) => (
-          <Link key={i} href={`/streams/${i}`} className="pt-4 block  px-4">
+        {data?.streams?.map((stream) => (
+          <Link
+            key={stream.id}
+            href={`/streams/${stream.id}`}
+            className="pt-4 block  px-4"
+          >
             <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
-            <h3 className="text-gray-700 text-lg mt-2">Lets try potatoes</h3>
+            <h3 className="text-gray-700 text-lg mt-2">{stream.name}</h3>
           </Link>
         ))}
         <FloatingButton href="/streams/create">
@@ -17,7 +31,7 @@ export default function Streams() {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="1.5"
+            strokeWidth="1.5"
             stroke="currentColor"
             className="w-6 h-6"
           >

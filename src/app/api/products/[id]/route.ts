@@ -5,7 +5,7 @@ export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  return withAuth(request, async (request) => {
+  return withAuth(async (session) => {
     const product = await client.product.findUnique({
       where: {
         id: Number(params.id),
@@ -24,7 +24,7 @@ export async function GET(
     const isFavorited = await client.favorite.findFirst({
       where: {
         productId: Number(params.id),
-        userId: request.session.userId,
+        userId: session.userId,
       },
     });
 
@@ -57,10 +57,7 @@ export async function GET(
         product,
         isFav: Boolean(isFavorited),
         relatedProducts,
-      }),
-      {
-        status: 200,
-      }
+      })
     );
   });
 }

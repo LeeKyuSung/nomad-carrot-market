@@ -5,10 +5,10 @@ export async function POST(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  return withAuth(request, async (request) => {
+  return withAuth(async (session) => {
     const alreadyWondered = await client.wondering.findFirst({
       where: {
-        userId: request.session.userId,
+        userId: session.userId,
         postId: Number(params.id),
       },
       select: {
@@ -26,7 +26,7 @@ export async function POST(
         data: {
           user: {
             connect: {
-              id: request.session.userId,
+              id: session.userId,
             },
           },
           post: {

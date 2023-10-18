@@ -5,7 +5,7 @@ export async function POST(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  return withAuth(request, async (request) => {
+  return withAuth(async (session) => {
     const post = await client.post.findUnique({
       where: {
         id: Number(params.id),
@@ -29,7 +29,7 @@ export async function POST(
       data: {
         user: {
           connect: {
-            id: request.session.userId,
+            id: session.userId,
           },
         },
         post: {

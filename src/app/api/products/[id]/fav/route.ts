@@ -5,11 +5,11 @@ export async function POST(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  return withAuth(request, async (request) => {
+  return withAuth(async (session) => {
     const alreadyFavorited = await client.favorite.findFirst({
       where: {
         productId: Number(params.id),
-        userId: request.session.userId,
+        userId: session.userId,
       },
     });
     if (alreadyFavorited) {
@@ -23,7 +23,7 @@ export async function POST(
         data: {
           user: {
             connect: {
-              id: request.session.userId,
+              id: session.userId,
             },
           },
           product: {
@@ -38,10 +38,7 @@ export async function POST(
     return new Response(
       JSON.stringify({
         ok: true,
-      }),
-      {
-        status: 200,
-      }
+      })
     );
   });
 }

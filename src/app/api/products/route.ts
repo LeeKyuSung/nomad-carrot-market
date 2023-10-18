@@ -2,7 +2,7 @@ import client from "@/libs/server/client";
 import withAuth from "@/libs/server/withAuth";
 
 export async function GET(request: Request) {
-  return withAuth(request, async (request) => {
+  return withAuth(async () => {
     const products = await client.product.findMany({
       include: {
         _count: {
@@ -15,16 +15,13 @@ export async function GET(request: Request) {
       JSON.stringify({
         ok: true,
         products,
-      }),
-      {
-        status: 200,
-      }
+      })
     );
   });
 }
 
 export async function POST(request: Request) {
-  return withAuth(request, async (request) => {
+  return withAuth(async (session) => {
     const { name, price, description } = await request.json();
     const product = await client.product.create({
       data: {
@@ -34,7 +31,7 @@ export async function POST(request: Request) {
         image: "xxxx",
         user: {
           connect: {
-            id: request.session.user.id,
+            id: session.user.id,
           },
         },
       },
@@ -44,10 +41,7 @@ export async function POST(request: Request) {
       JSON.stringify({
         ok: true,
         product,
-      }),
-      {
-        status: 200,
-      }
+      })
     );
   });
 }

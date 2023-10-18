@@ -1,16 +1,13 @@
 import { Session, User } from "@prisma/client";
 import getServerSession from "./getServerSession";
+import { NextResponse } from "next/server";
 
 interface SessionWithUser extends Session {
   user: User;
 }
-interface RequestWithSession extends Request {
-  session: SessionWithUser;
-}
 
 export default async function withAuth(
-  request: Request,
-  handler: (request: RequestWithSession) => Promise<Response>
+  handler: (session: SessionWithUser) => Promise<Response | NextResponse>
 ) {
   const session = await getServerSession();
   if (!session) {
@@ -25,8 +22,5 @@ export default async function withAuth(
     );
   }
 
-  const requestWithSession = request as RequestWithSession;
-  requestWithSession.session = session;
-
-  return handler(requestWithSession);
+  return handler(session);
 }

@@ -5,7 +5,7 @@ export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  return withAuth(request, async (request) => {
+  return withAuth(async (session) => {
     const post = await client.post.findUnique({
       where: {
         id: Number(params.id),
@@ -52,7 +52,7 @@ export async function GET(
     const isWondering = Boolean(
       await client.wondering.findFirst({
         where: {
-          userId: request.session.userId,
+          userId: session.userId,
           postId: Number(params.id),
         },
         select: {
@@ -66,10 +66,7 @@ export async function GET(
         ok: true,
         post,
         isWondering,
-      }),
-      {
-        status: 200,
-      }
+      })
     );
   });
 }

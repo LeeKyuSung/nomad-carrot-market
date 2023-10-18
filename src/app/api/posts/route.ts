@@ -3,12 +3,13 @@ import withAuth from "@/libs/server/withAuth";
 import { NextRequest } from "next/server";
 
 export function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const latitude = searchParams.get("latitude");
-  const parsedLatitude = latitude ? parseFloat(latitude) : null;
-  const longitude = searchParams.get("longitude");
-  const parsedLongitude = longitude ? parseFloat(longitude) : null;
-  return withAuth(request, async (request) => {
+  return withAuth(async () => {
+    const searchParams = request.nextUrl.searchParams;
+    const latitude = searchParams.get("latitude");
+    const parsedLatitude = latitude ? parseFloat(latitude) : null;
+    const longitude = searchParams.get("longitude");
+    const parsedLongitude = longitude ? parseFloat(longitude) : null;
+
     const posts = await client.post.findMany({
       orderBy: {
         id: "desc",
@@ -47,16 +48,13 @@ export function GET(request: NextRequest) {
       JSON.stringify({
         ok: true,
         posts,
-      }),
-      {
-        status: 200,
-      }
+      })
     );
   });
 }
 
 export async function POST(request: Request) {
-  return withAuth(request, async (request) => {
+  return withAuth(async (session) => {
     const { question, latitude, longitude } = await request.json();
 
     const post = await client.post.create({
@@ -66,7 +64,7 @@ export async function POST(request: Request) {
         longitude,
         user: {
           connect: {
-            id: request.session.userId,
+            id: session.userId,
           },
         },
       },
@@ -76,10 +74,7 @@ export async function POST(request: Request) {
       JSON.stringify({
         ok: true,
         post,
-      }),
-      {
-        status: 200,
-      }
+      })
     );
   });
 }

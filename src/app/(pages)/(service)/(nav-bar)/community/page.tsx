@@ -24,12 +24,13 @@ interface PostsResposne {
 }
 
 export default function Community() {
-  const { latitude, longitude } = useCoords();
-  const { data } = useSWR<PostsResposne>(
-    latitude && longitude
-      ? `/api/posts?latitude=${latitude}&longitude=${longitude}`
-      : null
-  );
+  // const { latitude, longitude } = useCoords();
+  // const { data } = useSWR<PostsResposne>(
+  //   latitude && longitude
+  //     ? `/api/posts?latitude=${latitude}&longitude=${longitude}`
+  //     : null
+  // );
+  const { data } = useSWR<PostsResposne>(`/api/posts`);
   return (
     <AppBar title="동네생활">
       <div className="p-4 space-y-8">

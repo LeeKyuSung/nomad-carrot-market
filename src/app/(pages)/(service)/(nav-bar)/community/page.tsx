@@ -1,27 +1,48 @@
+"use client";
+
 import AppBar from "@/components/app-bar";
 import FloatingButton from "@/components/floating-button";
+import { Post } from "@prisma/client";
 import Link from "next/link";
+import useSWR from "swr";
+
+interface PostWithUser extends Post {
+  user: {
+    id: number;
+    name: string;
+    avatar: string;
+  };
+  _count: {
+    Answer: number;
+    Wondering: number;
+  };
+}
+interface PostsResposne {
+  ok: boolean;
+  posts?: PostWithUser[];
+}
 
 export default function Community() {
+  const { data } = useSWR<PostsResposne>("/api/posts");
   return (
     <AppBar title="동네생활">
       <div className="p-4 space-y-8">
-        {[1, 2, 3, 4, 5].map((_, i) => (
+        {data?.posts?.map((post) => (
           <Link
-            href={`/community/${i}`}
-            key={i}
+            href={`/community/${post.id}`}
+            key={post.id}
             className="flex flex-col items-start cursor-pointer"
           >
             <span className="flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
               동네질문
             </span>
             <div className="mt-2 text-gray-700">
-              <span className="text-orange-500 font-medium">Q.</span> What is
-              the best mandu restaurant?
+              <span className="text-orange-500 font-medium">Q.</span>{" "}
+              {post.question}
             </div>
             <div className="mt-5 flex items-center justify-between w-full text-gray-500 font-medium text-xs">
-              <span>니꼬</span>
-              <span>18시간 전</span>
+              <span>{post.user.name}</span>
+              <span>{post.createdAt.toLocaleString()}</span>
             </div>
             <div className="flex space-x-5 mt-3 text-gray-700 py-2.5 border-t border-b-[2px] w-full">
               <span className="flex space-x-2 items-center text-sm">
@@ -39,7 +60,7 @@ export default function Community() {
                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                   ></path>
                 </svg>
-                <span>궁금해요 1</span>
+                <span>궁금해요 {post._count.Wondering}</span>
               </span>
               <span className="flex space-x-2 items-center text-sm">
                 <svg
@@ -56,7 +77,7 @@ export default function Community() {
                     d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                   ></path>
                 </svg>
-                <span>답변 1</span>
+                <span>답변 {post._count.Answer}</span>
               </span>
             </div>
           </Link>

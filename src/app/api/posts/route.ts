@@ -1,6 +1,41 @@
 import client from "@/libs/server/client";
 import withAuth from "@/libs/server/withAuth";
 
+export async function GET(request: Request) {
+  return withAuth(request, async (request) => {
+    const posts = await client.post.findMany({
+      orderBy: {
+        id: "desc",
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+        _count: {
+          select: {
+            Answer: true,
+            Wondering: true,
+          },
+        },
+      },
+    });
+
+    return new Response(
+      JSON.stringify({
+        ok: true,
+        posts,
+      }),
+      {
+        status: 200,
+      }
+    );
+  });
+}
+
 export async function POST(request: Request) {
   return withAuth(request, async (request) => {
     const { question } = await request.json();

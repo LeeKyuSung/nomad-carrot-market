@@ -1,7 +1,13 @@
 import client from "@/libs/server/client";
 import withAuth from "@/libs/server/withAuth";
+import { NextRequest } from "next/server";
 
-export async function GET(request: Request) {
+export function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const latitude = searchParams.get("latitude");
+  const parsedLatitude = latitude ? parseFloat(latitude) : null;
+  const longitude = searchParams.get("longitude");
+  const parsedLongitude = longitude ? parseFloat(longitude) : null;
   return withAuth(request, async (request) => {
     const posts = await client.post.findMany({
       orderBy: {
@@ -22,6 +28,19 @@ export async function GET(request: Request) {
           },
         },
       },
+      where:
+        parsedLatitude && parsedLongitude
+          ? {
+              latitude: {
+                gte: parsedLatitude - 0.05,
+                lte: parsedLatitude + 0.05,
+              },
+              longitude: {
+                gte: parsedLongitude - 0.05,
+                lte: parsedLongitude + 0.05,
+              },
+            }
+          : undefined,
     });
 
     return new Response(

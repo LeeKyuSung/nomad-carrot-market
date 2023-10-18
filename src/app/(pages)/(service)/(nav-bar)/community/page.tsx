@@ -2,6 +2,7 @@
 
 import AppBar from "@/components/app-bar";
 import FloatingButton from "@/components/floating-button";
+import useCoords from "@/libs/client/useCoords";
 import { Post } from "@prisma/client";
 import Link from "next/link";
 import useSWR from "swr";
@@ -23,7 +24,10 @@ interface PostsResposne {
 }
 
 export default function Community() {
-  const { data } = useSWR<PostsResposne>("/api/posts");
+  const { latitude, longitude } = useCoords();
+  const { data } = useSWR<PostsResposne>(
+    `/api/posts?latitude=${latitude}&longitude=${longitude}`
+  );
   return (
     <AppBar title="동네생활">
       <div className="p-4 space-y-8">

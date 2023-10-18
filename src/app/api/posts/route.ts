@@ -38,11 +38,13 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   return withAuth(request, async (request) => {
-    const { question } = await request.json();
+    const { question, latitude, longitude } = await request.json();
 
     const post = await client.post.create({
       data: {
         question,
+        latitude,
+        longitude,
         user: {
           connect: {
             id: request.session.userId,

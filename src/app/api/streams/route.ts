@@ -5,6 +5,8 @@ import { NextRequest } from "next/server";
 export function GET(request: NextRequest) {
   return withAuth(async (session) => {
     const streams = await client.stream.findMany({
+      // take: 10,
+      // skip: 10,
       orderBy: {
         id: "desc",
       },

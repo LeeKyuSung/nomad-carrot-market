@@ -26,6 +26,8 @@ model User {
   Post      Post[]
   Answer    Answer[]
   Wondering Wondering[]
+  Stream    Stream[]
+  Message   Message[]
 }
 
 model Token {
@@ -116,5 +118,33 @@ model Answer {
   updatedAt DateTime @updatedAt
 
   @@index([postId])
+  @@index([userId])
+}
+
+model Stream {
+  id          Int       @id @default(autoincrement())
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId      Int?
+  name        String
+  description String    @db.MediumText
+  price       Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Message     Message[]
+
+  @@index([userId])
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  stream    Stream   @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  streamId  Int
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId    Int?
+  message   String   @db.MediumText
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([streamId])
   @@index([userId])
 }

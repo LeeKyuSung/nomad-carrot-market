@@ -2,6 +2,8 @@
 
 import AppBar from "@/components/app-bar";
 import TextArea from "@/components/textarea";
+import useMutation from "@/libs/client/useMutation";
+import { classNames } from "@/libs/client/utils";
 import { Answer, Post } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -30,6 +32,7 @@ interface PostWithUser extends Post {
 interface CommunityPostResponse {
   ok: boolean;
   post?: PostWithUser;
+  isWondering?: boolean;
 }
 
 export default function CommunityPostDetail({
@@ -38,16 +41,37 @@ export default function CommunityPostDetail({
   params: { id: string };
 }) {
   const router = useRouter();
-  const { data, error } = useSWR<CommunityPostResponse>(
+  const { data, mutate, error } = useSWR<CommunityPostResponse>(
     params.id ? `/api/posts/${params.id}` : null
   );
-  console.log(data);
   useEffect(() => {
     if (data?.ok === false) {
       router.replace("/community");
     }
   }, [data, router]);
-  // TODO 404
+
+  const [wonder, { loading }] = useMutation(`/api/posts/${params.id}/wonder`);
+  const onWonderClick = () => {
+    if (!data || loading) return;
+    mutate(
+      {
+        ...data,
+        post: {
+          ...data.post!,
+          _count: {
+            ...data.post!._count,
+            Wondering: data.isWondering
+              ? data.post!._count.Wondering! - 1
+              : data.post!._count.Wondering! + 1,
+          },
+        },
+        isWondering: !data.isWondering,
+      },
+      false
+    );
+    wonder({});
+  };
+
   return (
     <AppBar title="제목" canGoBack>
       <div>
@@ -74,7 +98,13 @@ export default function CommunityPostDetail({
             {data?.post?.question}
           </div>
           <div className="flex px-4 space-x-5 mt-3 text-gray-700 py-2.5 border-t border-b-[2px]  w-full">
-            <span className="flex space-x-2 items-center text-sm">
+            <button
+              onClick={onWonderClick}
+              className={classNames(
+                "flex space-x-2 items-center text-sm",
+                data?.isWondering ? "text-teal-500" : ""
+              )}
+            >
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -90,7 +120,7 @@ export default function CommunityPostDetail({
                 ></path>
               </svg>
               <span>궁금해요 {data?.post?._count.Wondering}</span>
-            </span>
+            </button>
             <span className="flex space-x-2 items-center text-sm">
               <svg
                 className="w-4 h-4"

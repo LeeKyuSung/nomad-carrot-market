@@ -37,7 +37,6 @@ export async function GET(
         },
       },
     });
-
     if (!post) {
       return new Response(
         JSON.stringify({
@@ -50,10 +49,23 @@ export async function GET(
       );
     }
 
+    const isWondering = Boolean(
+      await client.wondering.findFirst({
+        where: {
+          userId: request.session.userId,
+          postId: Number(params.id),
+        },
+        select: {
+          id: true,
+        },
+      })
+    );
+
     return new Response(
       JSON.stringify({
         ok: true,
         post,
+        isWondering,
       }),
       {
         status: 200,

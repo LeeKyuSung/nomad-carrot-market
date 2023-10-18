@@ -3,28 +3,46 @@
 import AppBar from "@/components/app-bar";
 import Message from "@/components/message";
 import useMutation from "@/libs/client/useMutation";
+import useUser from "@/libs/client/useUser";
 import { Stream } from "@prisma/client";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 
+interface StreamWithMessages extends Stream {
+  Message: {
+    id: number;
+    message: string;
+    user: {
+      avatar: string;
+      id: number;
+    };
+  }[];
+}
 interface StreamResponse {
   ok: boolean;
-  stream?: Stream;
+  stream?: StreamWithMessages;
 }
 interface MessageForm {
   message: string;
 }
 export default function StreamDetail({ params }: { params: { id: string } }) {
-  const { data } = useSWR<StreamResponse>(`/api/streams/${params.id}`);
+  const { user } = useUser();
+  const { data, mutate } = useSWR<StreamResponse>(`/api/streams/${params.id}`);
   const { register, handleSubmit, reset } = useForm<MessageForm>();
   const [sendMessage, { loading, data: sendMessageData }] = useMutation(
-    `/api/streams/${params.id}/messages`
+    `/api/streams/${params.id}/message`
   );
   const onValid = (form: MessageForm) => {
     if (loading) return;
     reset();
     sendMessage(form);
   };
+  useEffect(() => {
+    if (sendMessageData?.ok) {
+      mutate();
+    }
+  }, [mutate, sendMessageData]);
 
   return (
     <AppBar title={data?.stream?.name} canGoBack>
@@ -42,9 +60,15 @@ export default function StreamDetail({ params }: { params: { id: string } }) {
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>
           <div className="py-10 pb-16 h-[50vh] overflow-y-scroll  px-4 space-y-4">
-            <Message message="Hi how much are you selling them for?" />
-            <Message message="I want ￦20,000" reversed />
-            <Message message="미쳤어" />
+            {data?.stream?.Message.map((message) => {
+              return (
+                <Message
+                  key={message.id}
+                  message={message.message}
+                  reversed={message.user.id === user?.id}
+                />
+              );
+            })}
           </div>
           <div className="fixed py-2 bg-white  bottom-0 inset-x-0">
             <form

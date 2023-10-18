@@ -8,11 +8,16 @@ export function GET(request: Request, { params }: { params: { id: string } }) {
         id: Number(params.id),
       },
       include: {
-        user: {
+        Message: {
           select: {
             id: true,
-            name: true,
-            avatar: true,
+            message: true,
+            user: {
+              select: {
+                avatar: true,
+                id: true,
+              },
+            },
           },
         },
       },

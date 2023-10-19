@@ -166,6 +166,7 @@ model Review {
   createdFor   User?    @relation(name: "receivedReview", fields: [createdForId], references: [id], onDelete: SetNull)
   createdForId Int?
   review       String   @db.MediumText
+  score        Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 

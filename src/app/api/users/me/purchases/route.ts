@@ -4,16 +4,32 @@ import { NextRequest } from "next/server";
 
 export function GET(request: NextRequest) {
   return withAuth(async (session) => {
-    const purchases = await client.purchase.findMany({
+    const data = await client.purchase.findMany({
       where: {
         userId: session.userId,
+      },
+      include: {
+        product: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+            price: true,
+            image: true,
+            _count: {
+              select: {
+                Fav: true,
+              },
+            },
+          },
+        },
       },
     });
 
     return new Response(
       JSON.stringify({
         ok: true,
-        purchases,
+        data,
       })
     );
   });

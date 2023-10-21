@@ -2,14 +2,19 @@
 import AppBar from "@/components/app-bar";
 import Button from "@/components/button";
 import Input from "@/components/input";
+import useMutation from "@/libs/client/useMutation";
 import useUser from "@/libs/client/useUser";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 
 interface EditProfileForm {
+  name?: string;
   email?: string;
   phone?: string;
-  formErrors?: string;
+}
+interface EditProfileResponse {
+  ok: boolean;
+  error?: string;
 }
 export default function EditProfile() {
   const { user } = useUser();
@@ -21,19 +26,27 @@ export default function EditProfile() {
     formState: { errors },
   } = useForm<EditProfileForm>();
   useEffect(() => {
+    if (user?.name) setValue("name", user.name);
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
   }, [setValue, user]);
-  const onValid = ({ email, phone }: EditProfileForm) => {
+  const [editProfile, { data, loading }] =
+    useMutation<EditProfileResponse>("/api/users/me");
+  const onValid = ({ name, email, phone }: EditProfileForm) => {
+    if (loading) return;
     if (email === "" && phone === "") {
-      setError("root.empty", {
+      setError("root.error", {
         message: "You must provide at least one field",
       });
     } else {
-      console.log("update profile");
-      // TODO
+      editProfile({ name, email, phone });
     }
   };
+  useEffect(() => {
+    if (data && !data.ok && data.error) {
+      setError("root.error", { message: data.error });
+    }
+  }, [data, setError]);
   return (
     <AppBar title="Edit profile" canGoBack>
       <form onSubmit={handleSubmit(onValid)} className="p-4 space-y-4">
@@ -53,6 +66,12 @@ export default function EditProfile() {
           </label>
         </div>
         <Input
+          register={register("name")}
+          label="Name"
+          name="name"
+          type="name"
+        />
+        <Input
           register={register("email")}
           label="Email address"
           name="email"
@@ -65,12 +84,12 @@ export default function EditProfile() {
           type="number"
           kind="phone"
         />
-        {errors.root?.empty ? (
+        {errors.root?.error ? (
           <span className="my-2 text-red-500 font-medium block">
-            {errors.root.empty.message}
+            {errors.root.error.message}
           </span>
         ) : null}
-        <Button text="Update profile" />
+        <Button text={loading ? "Loading..." : "Update profile"} />
       </form>
     </AppBar>
   );

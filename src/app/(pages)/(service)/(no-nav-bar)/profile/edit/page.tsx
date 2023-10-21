@@ -4,13 +4,14 @@ import Button from "@/components/button";
 import Input from "@/components/input";
 import useMutation from "@/libs/client/useMutation";
 import useUser from "@/libs/client/useUser";
-import { useEffect } from "react";
-import { FieldErrors, useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 interface EditProfileForm {
   name?: string;
   email?: string;
   phone?: string;
+  avatar?: FileList;
 }
 interface EditProfileResponse {
   ok: boolean;
@@ -24,6 +25,7 @@ export default function EditProfile() {
     handleSubmit,
     setError,
     formState: { errors },
+    watch,
   } = useForm<EditProfileForm>();
   useEffect(() => {
     if (user?.name) setValue("name", user.name);
@@ -32,7 +34,7 @@ export default function EditProfile() {
   }, [setValue, user]);
   const [editProfile, { data, loading }] =
     useMutation<EditProfileResponse>("/api/users/me");
-  const onValid = ({ name, email, phone }: EditProfileForm) => {
+  const onValid = ({ name, email, phone, avatar }: EditProfileForm) => {
     if (loading) return;
     if (email === "" && phone === "") {
       setError("root.error", {
@@ -47,17 +49,33 @@ export default function EditProfile() {
       setError("root.error", { message: data.error });
     }
   }, [data, setError]);
+  const [avatarPreview, setAvatarPreview] = useState("");
+  const avatar = watch("avatar");
+  useEffect(() => {
+    if (avatar && avatar[0]) {
+      const file = avatar[0];
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  }, [avatar, setValue]);
   return (
     <AppBar title="Edit profile" canGoBack>
       <form onSubmit={handleSubmit(onValid)} className="p-4 space-y-4">
         <div className="flex items-center space-x-3">
-          <div className="w-14 h-14 rounded-full bg-slate-500" />
+          {avatarPreview ? (
+            <img
+              src={avatarPreview}
+              className="w-14 h-14 rounded-full bg-slate-500"
+            />
+          ) : (
+            <div className="w-14 h-14 rounded-full bg-slate-500" />
+          )}
           <label
             htmlFor="picture"
             className="cursor-pointer py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium hover:ring-2 hover:ring-offset-2 hover:ring-orange-500 text-gray-700"
           >
             Change
             <input
+              {...register("avatar")}
               id="picture"
               type="file"
               className="hidden"

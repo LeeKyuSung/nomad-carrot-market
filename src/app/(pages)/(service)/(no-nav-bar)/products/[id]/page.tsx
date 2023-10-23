@@ -42,10 +42,16 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
     <AppBar title={data?.product.name} canGoBack>
       <div className="p-4">
         <div className="mb-8">
+          <img
+            src={`https://imagedelivery.net/9XhrxadWkcwKer2x3cW5Dw/${data?.product.image}/public`}
+            className="h-96 bg-slate-300"
+          />
           <Link href={`/users/profiles/${data?.product.user.id}`}>
-            <div className="h-96 bg-slate-300" />
             <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
-              <div className="w-12 h-12 rounded-full bg-slate-300" />
+              <img
+                src={`https://imagedelivery.net/9XhrxadWkcwKer2x3cW5Dw/${data?.product.user.avatar}/avatar`}
+                className="w-12 h-12 rounded-full bg-slate-300"
+              />
               <div>
                 <p className="text-sm font-medium text-gray-700">
                   {data?.product.user.name}

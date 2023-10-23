@@ -22,13 +22,13 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   return withAuth(async (session) => {
-    const { name, price, description } = await request.json();
+    const { name, price, description, photoId } = await request.json();
     const product = await client.product.create({
       data: {
         name,
         price: Number(price),
         description,
-        image: "xxxx",
+        image: photoId,
         user: {
           connect: {
             id: session.user.id,

@@ -43,9 +43,14 @@ export default function EditProfile() {
     } else {
       if (avatar && avatar[0]) {
         // ask for Cloudflare url
-        const cloudFlareRequest = await (await fetch(`/api/files`)).json();
-        console.log(cloudFlareRequest);
+        const { id, uploadURL } = await (await fetch(`/api/files`)).json();
         // upload file to CF URL
+        const form = new FormData();
+        form.append("file", avatar[0], String(user?.id));
+        await fetch(uploadURL, {
+          method: "POST",
+          body: form,
+        });
         // editProfile({ name, email, phone, avatarUrl: "" });
       } else {
         editProfile({ name, email, phone });

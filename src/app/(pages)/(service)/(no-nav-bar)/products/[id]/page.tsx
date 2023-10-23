@@ -5,6 +5,7 @@ import Button from "@/components/button";
 import useMutation from "@/libs/client/useMutation";
 import { classNames } from "@/libs/client/utils";
 import { Product } from "@prisma/client";
+import Image from "next/image";
 import Link from "next/link";
 import useSWR, { useSWRConfig } from "swr";
 
@@ -48,10 +49,19 @@ export default function ProductDetail({ params }: { params: { id: string } }) {
           />
           <Link href={`/users/profiles/${data?.product.user.id}`}>
             <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
-              <img
-                src={`https://imagedelivery.net/9XhrxadWkcwKer2x3cW5Dw/${data?.product.user.avatar}/avatar`}
-                className="w-12 h-12 rounded-full bg-slate-300"
-              />
+              {data ? (
+                <Image
+                  width={48}
+                  height={48}
+                  src={`https://imagedelivery.net/9XhrxadWkcwKer2x3cW5Dw/${data?.product.user.avatar}/avatar`}
+                  placeholder="empty"
+                  className="w-12 h-12 rounded-full bg-slate-300"
+                  alt={data.product.user.name}
+                />
+              ) : (
+                <div className="w-12 h-12 rounded-full bg-slate-300" />
+              )}
+
               <div>
                 <p className="text-sm font-medium text-gray-700">
                   {data?.product.user.name}

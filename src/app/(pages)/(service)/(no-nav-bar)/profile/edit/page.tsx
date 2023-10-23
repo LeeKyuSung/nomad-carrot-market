@@ -34,14 +34,22 @@ export default function EditProfile() {
   }, [setValue, user]);
   const [editProfile, { data, loading }] =
     useMutation<EditProfileResponse>("/api/users/me");
-  const onValid = ({ name, email, phone, avatar }: EditProfileForm) => {
+  const onValid = async ({ name, email, phone, avatar }: EditProfileForm) => {
     if (loading) return;
     if (email === "" && phone === "") {
       setError("root.error", {
         message: "You must provide at least one field",
       });
     } else {
-      editProfile({ name, email, phone });
+      if (avatar && avatar[0]) {
+        // ask for Cloudflare url
+        const cloudFlareRequest = await (await fetch(`/api/files`)).json();
+        console.log(cloudFlareRequest);
+        // upload file to CF URL
+        // editProfile({ name, email, phone, avatarUrl: "" });
+      } else {
+        editProfile({ name, email, phone });
+      }
     }
   };
   useEffect(() => {

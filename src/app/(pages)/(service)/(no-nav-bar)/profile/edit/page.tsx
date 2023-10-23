@@ -31,6 +31,10 @@ export default function EditProfile() {
     if (user?.name) setValue("name", user.name);
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
+    if (user?.avatar)
+      setAvatarPreview(
+        `https://imagedelivery.net/9XhrxadWkcwKer2x3cW5Dw/${user?.avatar}/public`
+      );
   }, [setValue, user]);
   const [editProfile, { data, loading }] =
     useMutation<EditProfileResponse>("/api/users/me");
@@ -43,15 +47,19 @@ export default function EditProfile() {
     } else {
       if (avatar && avatar[0]) {
         // ask for Cloudflare url
-        const { id, uploadURL } = await (await fetch(`/api/files`)).json();
+        const { uploadURL } = await (await fetch(`/api/files`)).json();
         // upload file to CF URL
         const form = new FormData();
         form.append("file", avatar[0], String(user?.id));
-        await fetch(uploadURL, {
-          method: "POST",
-          body: form,
-        });
-        // editProfile({ name, email, phone, avatarUrl: "" });
+        const {
+          result: { id },
+        } = await (
+          await fetch(uploadURL, {
+            method: "POST",
+            body: form,
+          })
+        ).json();
+        editProfile({ name, email, phone, avatarId: id });
       } else {
         editProfile({ name, email, phone });
       }

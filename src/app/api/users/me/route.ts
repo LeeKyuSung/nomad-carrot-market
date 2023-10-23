@@ -14,7 +14,7 @@ export function GET(request: Request) {
 
 export function POST(request: Request) {
   return withAuth(async (session) => {
-    const { name, email, phone } = await request.json();
+    const { name, email, phone, avatarId } = await request.json();
     if (email) {
       const alreadyExists = await client.user.findUnique({
         where: {
@@ -55,7 +55,8 @@ export function POST(request: Request) {
     if (
       name !== session.user.name ||
       email !== session.user.email ||
-      phone !== session.user.phone
+      phone !== session.user.phone ||
+      avatarId !== session.user.avatar
     ) {
       await client.user.update({
         where: {
@@ -79,6 +80,12 @@ export function POST(request: Request) {
               ? phone === ""
                 ? null
                 : phone
+              : undefined,
+          avatar:
+            avatarId !== session.user.avatar
+              ? avatarId === ""
+                ? null
+                : avatarId
               : undefined,
         },
       });

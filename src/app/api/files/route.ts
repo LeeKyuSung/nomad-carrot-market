@@ -1,4 +1,3 @@
-import client from "@/libs/server/client";
 import withAuth from "@/libs/server/withAuth";
 
 export function GET(request: Request) {
@@ -15,21 +14,10 @@ export function GET(request: Request) {
         }
       )
     ).json();
-    console.log(response);
     return new Response(
       JSON.stringify({
         ok: true,
         ...response.result,
-      })
-    );
-  });
-}
-
-export function POST(request: Request) {
-  return withAuth(async (session) => {
-    return new Response(
-      JSON.stringify({
-        ok: true,
       })
     );
   });

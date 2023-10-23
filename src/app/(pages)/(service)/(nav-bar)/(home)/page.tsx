@@ -1,11 +1,12 @@
 "use client";
-
+import AppBar from "@/components/app-bar";
 import FloatingButton from "@/components/floating-button";
 import ProductComponent from "@/components/product-component";
 import "@/libs/server/client";
-import AppBar from "@/components/app-bar";
-import useSWR from "swr";
 import { Product } from "@prisma/client";
+import Image from "next/image";
+import useSWR from "swr";
+import testImage from "../../../../../../public/test.jpg";
 
 interface ProductWithCount extends Product {
   _count: {
@@ -19,9 +20,9 @@ interface ProductResponse {
 
 export default function Home() {
   const { data } = useSWR<ProductResponse>("/api/products");
-  console.log(data);
   return (
     <AppBar title="홈">
+      {/* <Image src={testImage} placeholder="blur" alt="" /> */}
       <div className="flex flex-col space-y-5 divide-y">
         {data?.products?.map((product) => (
           <ProductComponent

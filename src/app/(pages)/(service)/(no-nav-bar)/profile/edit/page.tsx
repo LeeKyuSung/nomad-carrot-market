@@ -33,7 +33,7 @@ export default function EditProfile() {
     if (user?.phone) setValue("phone", user.phone);
     if (user?.avatar)
       setAvatarPreview(
-        `https://imagedelivery.net/9XhrxadWkcwKer2x3cW5Dw/${user?.avatar}/public`
+        `https://imagedelivery.net/9XhrxadWkcwKer2x3cW5Dw/${user?.avatar}/avatar`
       );
   }, [setValue, user]);
   const [editProfile, { data, loading }] =

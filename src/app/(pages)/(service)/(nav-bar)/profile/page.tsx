@@ -28,7 +28,7 @@ export default function Profile() {
         <div className="flex items-center space-x-3">
           {user?.avatar ? (
             <img
-              src={`https://imagedelivery.net/9XhrxadWkcwKer2x3cW5Dw/${user?.avatar}/public`}
+              src={`https://imagedelivery.net/9XhrxadWkcwKer2x3cW5Dw/${user?.avatar}/avatar`}
               className="w-16 h-16 bg-slate-500 rounded-full"
             />
           ) : (

@@ -7,7 +7,17 @@ export function GET(request: Request, { params }: { params: { id: string } }) {
       where: {
         id: Number(params.id),
       },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        description: true,
+        cloudflareId: true,
+        cloudflareKey: true,
+        cloudflareUrl: true,
+        createdAt: true,
+        updatedAt: true,
+        userId: true,
         Message: {
           select: {
             id: true,
@@ -22,7 +32,11 @@ export function GET(request: Request, { params }: { params: { id: string } }) {
         },
       },
     });
-
+    const isOwner = stream?.userId === session.userId;
+    if (stream && !isOwner) {
+      stream.cloudflareKey = "xxxxx";
+      stream.cloudflareUrl = "xxxxx";
+    }
     return new Response(
       JSON.stringify({
         ok: true,
